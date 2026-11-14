@@ -294,3 +294,9 @@ Railsは、公開時点でセキュリティ修正の対象となるバージョ
 [SetLogの画面遷移図（Figma）](https://www.figma.com/design/wBy59qXOrwyfLQ2o7qy2b2?node-id=3-179)
 
 MVPの7画面と削除確認、空の状態・入力エラー時の扱いをまとめています。
+
+### ER図
+
+[SetLogのER図（PNG）](./er-diagram.png)
+
+ユーザー（users）、種目（exercises）、トレーニング記録（workout_records）の3テーブルで管理する設計です。各カラムの型、主キー・外部キー、テーブル間の関係を図に記載しています。
