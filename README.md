@@ -300,3 +300,65 @@ MVPの7画面と削除確認、空の状態・入力エラー時の扱いをま�
 [SetLogのER図（PNG）](./er-diagram.png)
 
 ユーザー（users）、種目（exercises）、トレーニング記録（workout_records）の3テーブルで管理する設計です。各カラムの型、主キー・外部キー、テーブル間の関係を図に記載しています。
+
+## 開発環境
+
+以下はD01で起動を確認した開発環境です。
+
+| 対象 | バージョン・構成 |
+| --- | --- |
+| Ruby | 3.4.12 |
+| Ruby on Rails | 8.1.4.1 |
+| MySQL | 8.4（動作確認時：8.4.13） |
+| 画面 | ERB・CSS |
+| ローカル実行 | Docker Desktop・Docker Compose |
+
+Railsは[公式の保守期間](https://rubyonrails.org/maintenance)内の8.1系を使用します。MySQLとERBを使い、承認済みのREADME・ER図を保持します。DeviseはD08で導入し、導入時に実際の依存関係と認証を確認します。
+
+### 初回起動
+
+Docker Desktopを起動してから、Ubuntuのターミナルでリポジトリのディレクトリへ移動し、次を実行します。RubyやMySQLをWindowsに直接インストールする必要はありません。
+
+```bash
+cp -n .env.example .env
+docker compose build web
+docker compose run --rm web bundle install
+docker compose run --rm web bin/rails db:prepare
+docker compose run --rm -e RAILS_ENV=test web bin/rails db:prepare
+docker compose up -d web
+```
+
+[ローカルのアプリ](http://localhost:3000)を開きます。D01ではRailsの初期画面を確認し、D02でSetLogのTOPページを追加します。
+
+`.env.example`の値はローカル開発専用です。`.env`と`config/master.key`はGitの管理対象から除外します。本番環境の接続情報はD03で別途設定します。
+
+### 起動・停止・ログの確認
+
+```bash
+# 2回目以降の起動
+docker compose up -d
+
+# ログの確認（Ctrl+Cでログ表示を終了）
+docker compose logs -f web
+
+# 停止（MySQLのデータを保持）
+docker compose stop
+```
+
+開発DBは`setlog_development`、テストDBは`setlog_test`に分けます。テストDBの作成・権限設定は`docker/mysql/init/01-test-database.sql`で行います。MySQLのデータは`setlog_mysql_data`ボリュームに保存され、通常の停止・起動では消えません。
+
+### 確認用コマンド
+
+```bash
+docker compose run --rm web bin/rails zeitwerk:check
+docker compose run --rm web bin/rails runner 'puts ActiveRecord::Base.connection.select_value("SELECT DATABASE()")'
+docker compose run --rm -e RAILS_ENV=test web bin/rails runner 'puts ActiveRecord::Base.connection.select_value("SELECT DATABASE()")'
+```
+
+RSpecとテストヘルパーはD04、Lintの調整はD05、GitHub ActionsはD06、カバレッジ測定はD07で導入します。
+
+- Rails標準のテストファイルとGitHub Actionsの生成は省略しています。
+- `.rubocop.yml`、`bin/rubocop`、`rubocop-rails-omakase`はRailsが生成した設定を保持しています。
+- `bin/ci`と`config/ci.rb`は、セットアップ・Lint・セキュリティ検査をローカルで実行するための生成済み補助ファイルです。テストやGitHub Actionsの導入完了を意味しません。
+
+2026年11月16日に、開発DB・テストDBへの接続、`zeitwerk:check`、初期画面`/`とヘルスチェック`/up`のHTTP 200応答を確認しました。
