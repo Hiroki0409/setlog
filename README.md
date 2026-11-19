@@ -367,7 +367,13 @@ RSpecを実行すると、テスト用DBの `setlog_test` を使います。
 docker compose run --rm -e RAILS_ENV=test web bundle exec rspec
 ```
 
-Lintの調整はD05、GitHub ActionsはD06、カバレッジ測定はD07で導入します。
+### Lintの実行
+
+```bash
+docker compose run --rm web bin/rubocop
+```
+
+GitHub ActionsはD06、カバレッジ測定はD07で導入します。
 
 - Rails標準のテストファイルとGitHub Actionsの生成は省略しています。
 - `.rubocop.yml`、`bin/rubocop`、`rubocop-rails-omakase`はRailsが生成した設定を保持しています。
