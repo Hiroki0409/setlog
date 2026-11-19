@@ -373,11 +373,15 @@ docker compose run --rm -e RAILS_ENV=test web bundle exec rspec
 docker compose run --rm web bin/rubocop
 ```
 
-GitHub ActionsはD06、カバレッジ測定はD07で導入します。
+### GitHub Actions
 
-- Rails標準のテストファイルとGitHub Actionsの生成は省略しています。
+PRの作成・更新時と `main` へのpush時に、GitHub ActionsでRSpecとRuboCopを実行します。
+
+カバレッジ測定はD07で導入します。
+
+- Railsの初期生成時には、標準のテストファイルとGitHub Actionsの生成を省略しました。
 - `.rubocop.yml`、`bin/rubocop`、`rubocop-rails-omakase`はRailsが生成した設定を保持しています。
-- `bin/ci`と`config/ci.rb`は、セットアップ・Lint・セキュリティ検査をローカルで実行するための生成済み補助ファイルです。テストやGitHub Actionsの導入完了を意味しません。
+- `bin/ci`と`config/ci.rb`は、セットアップ・Lint・セキュリティ検査をローカルで実行するための生成済み補助ファイルです。
 
 2026年11月16日に、開発DB・テストDBへの接続、`zeitwerk:check`、初期画面`/`とヘルスチェック`/up`のHTTP 200応答を確認しました。
 
