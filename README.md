@@ -228,7 +228,7 @@ SetLogは、セットごとに重量・回数を変える筋トレ実践者が�
 | 初回は参照できる記録がない | まだデータが保存されていないため | 「この実施日より前の記録はありません」と表示し、そのまま入力・保存できるようにする |
 | スマートフォンで入力しづらい可能性 | 数値入力と画面の確認が中心となるため | 数値用の入力欄と見やすいボタンを用意し、実機で確認する |
 | 他人のデータを参照・変更できてしまう可能性 | ユーザーごとにデータを保存するため | 認証に加え、サーバー側で所有者を確認する。別ユーザーによる参照・更新・削除を拒否できることをテストする |
-| 開発・公開に時間がかかる可能性 | 機能追加や公開環境の選定が後になると作業が増えるため | 初期に公開環境を確定して接続を試し、MVPの機能を優先する |
+| 開発・公開に時間がかかる可能性 | 本番での動作確認が提出直前に集中すると、問題への対応に時間がかかるため | 初回公開済みのRailway環境で、MVPの各機能の動作を確認する |
 
 ## 9. 今後の展開・発展の方向性
 
@@ -255,15 +255,15 @@ SetLogは、セットごとに重量・回数を変える筋トレ実践者が�
 | 区分 | 採用予定 |
 | --- | --- |
 | 言語 | Ruby、HTML、CSS。JavaScriptは必要な箇所のみ |
-| フレームワーク | Ruby on Rails。使用バージョンは保守状況とライブラリの互換性を確認して確定 |
+| フレームワーク | Ruby on Rails 8.1.4.1 |
 | 画面 | ERBとCSS |
 | データベース | MySQL |
 | 認証 | Devise |
 | テスト | RSpec。基本操作・入力チェック・データの所有者確認を重点的に検証 |
 | 開発・管理 | Git、GitHub |
-| デプロイ先 | 未決定。RailsとMySQLの利用条件・費用・学習済みの手順を確認し、実装初期に確定 |
+| デプロイ先 | Railway（Rails・MySQL） |
 
-Railsは、公開時点でセキュリティ修正の対象となるバージョンを採用します。[Rails公式メンテナンスポリシー](https://rubyonrails.org/maintenance)を確認し、具体的なバージョンは環境構築時に記録します。
+Rails 8.1系を使用しています。保守期間は[Rails公式メンテナンスポリシー](https://rubyonrails.org/maintenance)を参照してください。
 
 主なデータは、User（ユーザー）、Exercise（種目）、WorkoutRecord（トレーニング記録）の3モデルで管理する予定です。ユーザーが種目を持ち、その種目に実施日付きの記録を紐づけます。前回表示は実施日でまとめて取得し、MVPではセッション用モデルを追加しません。
 
@@ -271,9 +271,9 @@ Railsは、公開時点でセキュリティ修正の対象となるバージョ
 
 | 技術・構成 | 方針 | 理由 |
 | --- | --- | --- |
-| Ruby on RailsとERB | 採用予定 | 学習内容を活用し、画面表示とデータ保存を一つのアプリで扱うため |
+| Ruby on RailsとERB | 採用 | 学習内容を活用し、画面表示とデータ保存を一つのアプリで扱うため |
 | ReactとAPIの分離構成 | 今回は不採用 | 今回の画面と入力処理を実現するうえで、別構成の導入を必要としていないため |
-| MySQL | 採用予定 | 学習で使用した経験を活用するため |
+| MySQL | 採用 | 学習で使用した経験を活用するため |
 | PostgreSQL | 現時点では不採用 | MySQLを優先する。ただし公開環境の制約があれば比較し直す |
 | Devise | 採用予定 | Rails向けの既存認証ライブラリを利用するため。導入後もデータの所有者確認は別に実装する |
 | 追加のUIフレームワーク | 今回は不採用 | 必要な画面をERBとCSSで構築し、導入する技術を絞るため |
@@ -285,7 +285,7 @@ Railsは、公開時点でセキュリティ修正の対象となるバージョ
 - **認証とデータの分離：** ログイン済みかどうかだけでなく、指定された種目・記録が本人のものかを、各処理で確認する必要があります。
 - **前回の記録の取得：** 本人・選択種目で絞り、入力対象日より前の最大の実施日を求め、その日の全記録を作成順に取得します。当日の記録を除外できること、過去日入力・前回なし・同日複数・他種目・他ユーザー・編集や削除後の再表示を確認します。
 - **入力チェック：** 実施日・種目の必須入力、重量が0以上の数値であること、回数とセット数が1以上の整数であることを確認します。
-- **バージョンと公開環境：** Rails・Ruby・Deviseの互換性と、MySQLの接続・データ保持・費用を確認します。デプロイ先は未決定のため、選定と接続確認を初期作業に含めます。
+- **バージョンと公開環境：** RailwayでRailsからMySQLへの接続を確認済みです。Devise導入時にRails・Rubyとの互換性を確認し、記録機能の実装後にMySQLのデータ保持を確認します。提出前にRailwayの利用枠と費用を確認します。
 
 新しい技術を増やすことよりも、MVPを公開し、記録・確認の流れを検証できる状態にすることを優先します。
 
@@ -328,9 +328,9 @@ docker compose run --rm -e RAILS_ENV=test web bin/rails db:prepare
 docker compose up -d web
 ```
 
-[ローカルのアプリ](http://localhost:3000)を開きます。D01ではRailsの初期画面を確認し、D02でSetLogのTOPページを追加します。
+[ローカルのアプリ](http://localhost:3000)を開き、SetLogのTOPページが表示されることを確認します。
 
-`.env.example`の値はローカル開発専用です。`.env`と`config/master.key`はGitの管理対象から除外します。本番環境の接続情報はD03で別途設定します。
+`.env.example`の値はローカル開発専用です。`.env`と`config/master.key`はGitの管理対象から除外します。本番環境の接続情報はRailwayの環境変数で管理します。
 
 ### 起動・停止・ログの確認
 
@@ -351,8 +351,12 @@ docker compose stop
 
 ```bash
 docker compose run --rm web bin/rails zeitwerk:check
-docker compose run --rm web bin/rails runner 'puts ActiveRecord::Base.connection.select_value("SELECT DATABASE()")'
-docker compose run --rm -e RAILS_ENV=test web bin/rails runner 'puts ActiveRecord::Base.connection.select_value("SELECT DATABASE()")'
+
+docker compose run --rm web bin/rails runner \
+  'puts ActiveRecord::Base.connection.select_value("SELECT DATABASE()")'
+
+docker compose run --rm -e RAILS_ENV=test web bin/rails runner \
+  'puts ActiveRecord::Base.connection.select_value("SELECT DATABASE()")'
 ```
 
 RSpecとテストヘルパーはD04、Lintの調整はD05、GitHub ActionsはD06、カバレッジ測定はD07で導入します。
@@ -362,3 +366,20 @@ RSpecとテストヘルパーはD04、Lintの調整はD05、GitHub ActionsはD06
 - `bin/ci`と`config/ci.rb`は、セットアップ・Lint・セキュリティ検査をローカルで実行するための生成済み補助ファイルです。テストやGitHub Actionsの導入完了を意味しません。
 
 2026年11月16日に、開発DB・テストDBへの接続、`zeitwerk:check`、初期画面`/`とヘルスチェック`/up`のHTTP 200応答を確認しました。
+
+## 本番環境
+
+- 公開URL：[SetLog](https://setlog-production-7057d56b.up.railway.app/)
+- 公開先：Railway。RailsとMySQLを別サービスとして動かし、MySQLのデータは `mysql-volume` に保存します。
+- 費用：初回公開時は[無料トライアル](https://docs.railway.com/pricing/free-trial)を利用しました。利用枠は最大30日、または5米ドル分です。
+
+### デプロイ・再デプロイ
+
+- Railwayの `setlog` サービスはGitHubの `main` ブランチに接続しています。`main` の更新で自動デプロイされます。
+- 手動で再デプロイする場合は、Railwayの `setlog` → `Deployments` で対象のデプロイの `…` から `Redeploy` を選択します。
+- 公開ドメインのターゲットポートは `8080` です。MySQLの接続情報と `SECRET_KEY_BASE` はRailwayの環境変数に設定します。
+
+### 初回公開の確認（2026年11月18日）
+
+- Chromeのシークレットウィンドウから、HTTPSの公開URLでTOPページが表示されることを確認しました。
+- Railwayの `setlog` コンソールで、本番のRailsからMySQLに `SELECT 1` を実行し、`1` が返ることを確認しました。
