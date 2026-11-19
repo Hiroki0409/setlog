@@ -377,7 +377,11 @@ docker compose run --rm web bin/rubocop
 
 PRの作成・更新時と `main` へのpush時に、GitHub ActionsでRSpecとRuboCopを実行します。
 
-カバレッジ測定はD07で導入します。
+### カバレッジの確認
+
+RSpec実行後に `coverage/index.html` をブラウザーで開きます。ファイル名を選ぶと、実行された行と未実行の行を確認できます。登録や記録の保存など、重要な処理の未実行箇所を優先して確認します。
+
+GitHub Actionsでは、実行結果の **Artifacts** から `coverage-report` をダウンロードして展開し、`index.html` を開きます。
 
 - Railsの初期生成時には、標準のテストファイルとGitHub Actionsの生成を省略しました。
 - `.rubocop.yml`、`bin/rubocop`、`rubocop-rails-omakase`はRailsが生成した設定を保持しています。

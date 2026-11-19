@@ -33,3 +33,10 @@ jobs:
 
       - name: RuboCop
         run: docker compose run --rm -T web bin/rubocop
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage/index.html
+          if-no-files-found: error
