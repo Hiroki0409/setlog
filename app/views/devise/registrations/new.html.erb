@@ -1,0 +1,46 @@
+<% content_for :title, "新規登録 | SetLog" %>
+
+<div class="site-shell">
+  <header class="site-header">
+    <p class="site-name">SetLog</p>
+  </header>
+
+  <main class="home-content">
+    <h1>新規登録</h1>
+
+    <% if resource.errors.any? %>
+      <div class="auth-errors" role="alert">
+        <p>入力内容を確認してください。</p>
+        <ul>
+          <% resource.errors.each do |error| %>
+            <li><%= t("registration.errors.#{error.attribute}.#{error.type}",
+                      locale: :ja, default: error.full_message, count: error.options[:count]) %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_for resource, as: resource_name, url: user_registration_path, html: { class: "auth-form" } do |form| %>
+      <div class="auth-field">
+        <%= form.label :email, "メールアドレス" %>
+        <%= form.email_field :email, autocomplete: "email", required: true %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :password, "パスワード" %>
+        <%= form.password_field :password, autocomplete: "new-password", required: true,
+                                minlength: @minimum_password_length, aria: { describedby: "password-hint" } %>
+        <small id="password-hint" class="preparation-notice"><%= @minimum_password_length %>文字以上</small>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :password_confirmation, "確認用パスワード" %>
+        <%= form.password_field :password_confirmation, autocomplete: "new-password", required: true %>
+      </div>
+
+      <%= form.submit "登録する", class: "button button-primary" %>
+    <% end %>
+
+    <%= link_to "TOPページへ戻る", root_path %>
+  </main>
+</div>
