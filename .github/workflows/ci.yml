@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: RSpec and RuboCop
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        run: |
+          cp .env.example .env
+          docker compose build web
+          docker compose run --rm -T web bundle install
+
+      - name: Prepare test database
+        run: docker compose run --rm -T -e RAILS_ENV=test web bin/rails db:prepare
+
+      - name: RSpec
+        run: docker compose run --rm -T -e RAILS_ENV=test web bundle exec rspec
+
+      - name: RuboCop
+        run: docker compose run --rm -T web bin/rubocop
