@@ -12,11 +12,15 @@
       <p>記録は自分だけが閲覧できます。</p>
     </div>
 
-    <div class="home-actions" aria-describedby="registration-notice">
-      <button class="button button-primary" type="button" disabled>新規登録</button>
-      <button class="button button-secondary" type="button" disabled>ログイン</button>
-    </div>
-    <p id="registration-notice" class="preparation-notice">公開準備中です。登録・ログインはまだご利用いただけません。</p>
+    <% if user_signed_in? %>
+      <p class="preparation-notice">ログイン中です。</p>
+    <% else %>
+      <div class="home-actions" aria-describedby="registration-notice">
+        <%= link_to "新規登録", new_user_registration_path, class: "button button-primary" %>
+        <button class="button button-secondary" type="button" disabled>ログイン</button>
+      </div>
+      <p id="registration-notice" class="preparation-notice">ログイン画面は準備中です。</p>
+    <% end %>
   </main>
 
   <footer class="site-footer">
