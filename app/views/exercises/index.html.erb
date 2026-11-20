@@ -1,0 +1,44 @@
+<% content_for :title, "種目一覧 | SetLog" %>
+
+<div class="site-shell">
+  <header class="site-header">
+    <p class="site-name">SetLog</p>
+  </header>
+
+  <main class="home-content">
+    <h1>種目一覧</h1>
+
+    <% if @exercises.any? %>
+      <ul>
+        <% @exercises.each do |exercise| %>
+          <li><%= exercise.name %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>まだ種目が登録されていません。下のフォームから種目を登録してください。</p>
+    <% end %>
+
+    <% if @exercise.errors.any? %>
+      <div class="auth-errors" role="alert">
+        <p>入力内容を確認してください。</p>
+        <ul>
+          <% @exercise.errors.each do |error| %>
+            <li><%= t("exercises.errors.#{error.attribute}.#{error.type}", locale: :ja, default: error.full_message) %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @exercise, local: true, class: "auth-form" do |form| %>
+      <div class="auth-field">
+        <%= form.label :name, "種目名" %>
+        <%= form.text_field :name, required: true, maxlength: 100, aria: { describedby: "exercise-name-hint" } %>
+        <small id="exercise-name-hint" class="preparation-notice">100文字以内</small>
+      </div>
+
+      <%= form.submit "種目を登録する", class: "button button-primary" %>
+    <% end %>
+
+    <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "button button-secondary" %>
+  </main>
+</div>

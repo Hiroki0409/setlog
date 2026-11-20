@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get "users/sign_up", to: "devise/registrations#new", as: :new_user_registration
     post "users", to: "devise/registrations#create", as: :user_registration
   end
+  resources :exercises, only: [ :index, :create ]
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

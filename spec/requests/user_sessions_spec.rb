@@ -14,12 +14,12 @@ RSpec.describe "ログインとログアウト", type: :request do
     expect(response.body).to include('name="user[email]"', 'name="user[password]"')
   end
 
-  it "正しい認証情報でログインしてTOPへ戻る" do
+  it "正しい認証情報でログインして種目一覧へ進む" do
     post user_session_path, params: { user: credentials }
 
-    expect(response).to redirect_to(root_path)
+    expect(response).to redirect_to(exercises_path)
     follow_redirect!
-    expect(response.body).to include("ログイン中です。", "ログアウト")
+    expect(response.body).to include("種目一覧", "ログアウト")
   end
 
   it "誤ったパスワードではエラーを表示し、ログインできない" do
@@ -36,7 +36,7 @@ RSpec.describe "ログインとログアウト", type: :request do
   it "ログアウトしてTOPへ戻ると認証が解除されている" do
     post user_session_path, params: { user: credentials }
     follow_redirect!
-    expect(response.body).to include("ログイン中です。")
+    expect(response.body).to include("種目一覧", "ログアウト")
 
     delete destroy_user_session_path
 
