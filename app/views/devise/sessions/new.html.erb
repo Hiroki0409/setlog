@@ -1,0 +1,31 @@
+<% content_for :title, "ログイン | SetLog" %>
+
+<div class="site-shell">
+  <header class="site-header">
+    <p class="site-name">SetLog</p>
+  </header>
+
+  <main class="home-content">
+    <h1>ログイン</h1>
+
+    <% if flash[:alert].present? %>
+      <p class="auth-errors" role="alert">メールアドレスとパスワードを確認して、ログインしてください。</p>
+    <% end %>
+
+    <%= form_for resource, as: resource_name, url: user_session_path, html: { class: "auth-form" } do |form| %>
+      <div class="auth-field">
+        <%= form.label :email, "メールアドレス" %>
+        <%= form.email_field :email, autocomplete: "email", required: true %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :password, "パスワード" %>
+        <%= form.password_field :password, autocomplete: "current-password", required: true %>
+      </div>
+
+      <%= form.submit "ログイン", class: "button button-primary" %>
+    <% end %>
+
+    <%= link_to "TOPページへ戻る", root_path %>
+  </main>
+</div>
