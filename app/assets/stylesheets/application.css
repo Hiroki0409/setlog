@@ -135,7 +135,8 @@ a.button {
   gap: 6px;
 }
 
-.auth-field input {
+.auth-field input,
+.auth-field select {
   width: 100%;
   min-height: 44px;
   padding: 8px 12px;

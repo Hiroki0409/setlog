@@ -1,0 +1,56 @@
+<% content_for :title, "トレーニング記録 | SetLog" %>
+
+<div class="site-shell">
+  <header class="site-header">
+    <p class="site-name">SetLog</p>
+  </header>
+
+  <main class="home-content">
+    <h1>トレーニング記録</h1>
+    <p><strong>種目</strong> <%= @exercise.name %></p>
+
+    <% if flash[:notice].present? %>
+      <p class="home-guide" role="status"><%= flash[:notice] %></p>
+    <% end %>
+
+    <% if @workout_record.errors.any? %>
+      <div class="auth-errors" role="alert">
+        <p>入力内容を確認してください。</p>
+        <ul>
+          <% @workout_record.errors.each do |error| %>
+            <li><%= t("workout_records.errors.#{error.attribute}", locale: :ja, default: error.full_message) %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @workout_record, local: true, class: "auth-form" do |form| %>
+      <%= form.hidden_field :exercise_id %>
+
+      <div class="auth-field">
+        <%= form.label :performed_on, "実施日" %>
+        <%= form.date_field :performed_on, required: true %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :weight, "重量（kg）" %>
+        <%= form.text_field :weight, value: @workout_record.weight_before_type_cast, inputmode: "decimal", required: true %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :reps, "回数" %>
+        <%= form.text_field :reps, value: @workout_record.reps_before_type_cast, inputmode: "numeric", required: true %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :set_count, "セット数" %>
+        <%= form.text_field :set_count, value: @workout_record.set_count_before_type_cast,
+                            inputmode: "numeric", required: true %>
+      </div>
+
+      <%= form.submit "記録を保存する", class: "button button-primary" %>
+    <% end %>
+
+    <%= link_to "種目一覧へ戻る", exercises_path, class: "button button-secondary" %>
+  </main>
+</div>
