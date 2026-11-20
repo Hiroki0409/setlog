@@ -14,6 +14,21 @@
           <li><%= exercise.name %></li>
         <% end %>
       </ul>
+
+      <%= form_with url: new_workout_record_path, method: :get, local: true, class: "auth-form" do %>
+        <div class="auth-field">
+          <%= label_tag :exercise_id, "記録する種目" %>
+          <%= select_tag :exercise_id, options_from_collection_for_select(@exercises, :id, :name),
+                         include_blank: "種目を選択", required: true %>
+        </div>
+
+        <div class="auth-field">
+          <%= label_tag :performed_on, "実施日" %>
+          <%= date_field_tag :performed_on, Time.current.in_time_zone("Tokyo").to_date, required: true %>
+        </div>
+
+        <%= submit_tag "記録入力へ", class: "button button-primary" %>
+      <% end %>
     <% else %>
       <p>まだ種目が登録されていません。下のフォームから種目を登録してください。</p>
     <% end %>
