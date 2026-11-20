@@ -14,6 +14,7 @@
 
     <% if user_signed_in? %>
       <p class="preparation-notice">ログイン中です。</p>
+      <%= link_to "種目一覧", exercises_path, class: "button button-primary" %>
       <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "button button-secondary" %>
     <% else %>
       <div class="home-actions">

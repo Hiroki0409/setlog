@@ -1,0 +1,7 @@
+ja:
+  exercises:
+    errors:
+      name:
+        blank: 種目名を入力してください。
+        too_long: 種目名は100文字以内で入力してください。
+        taken: この種目名はすでに登録されています。

@@ -24,14 +24,14 @@ RSpec.describe "新規登録", type: :request do
                                      'name="user[password_confirmation]"')
   end
 
-  it "登録に成功するとログインした状態でTOPページへ戻る" do
+  it "登録に成功するとログインした状態で種目一覧へ進む" do
     expect {
       post user_registration_path, params: { user: attributes }
     }.to change(User, :count).by(1)
 
-    expect(response).to redirect_to(root_path)
+    expect(response).to redirect_to(exercises_path)
     follow_redirect!
-    expect(response.body).to include("ログイン中です。")
+    expect(response.body).to include("種目一覧", "ログアウト")
   end
 
   it "メールアドレスが不正なら登録画面に理由を表示する" do
