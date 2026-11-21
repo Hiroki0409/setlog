@@ -1,0 +1,31 @@
+<% content_for :title, "記録を編集 | SetLog" %>
+
+<div class="site-shell">
+  <header class="site-header">
+    <p class="site-name">SetLog</p>
+  </header>
+
+  <main class="home-content">
+    <h1>記録を編集</h1>
+
+    <%= render "errors", record: @workout_record %>
+
+    <%= form_with model: @workout_record, local: true, class: "auth-form" do |form| %>
+      <div class="auth-field">
+        <%= form.label :exercise_id, "種目" %>
+        <%= form.collection_select :exercise_id, @exercises, :id, :name, {}, { required: true } %>
+      </div>
+
+      <div class="auth-field">
+        <%= form.label :performed_on, "実施日" %>
+        <%= form.date_field :performed_on, required: true %>
+      </div>
+
+      <%= render "measurement_fields", form: form, record: @workout_record %>
+
+      <%= form.submit "変更を保存する", class: "button button-primary" %>
+    <% end %>
+
+    <%= link_to "キャンセル", workout_records_path, class: "button button-secondary" %>
+  </main>
+</div>
