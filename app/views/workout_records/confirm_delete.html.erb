@@ -1,0 +1,22 @@
+<% content_for :title, "記録の削除確認 | SetLog" %>
+
+<div class="site-shell">
+  <header class="site-header">
+    <p class="site-name">SetLog</p>
+  </header>
+
+  <main class="home-content">
+    <h1>記録の削除確認</h1>
+    <p>この記録を削除しますか？</p>
+
+    <div class="home-guide">
+      <%= render "summary", record: @workout_record %>
+    </div>
+
+    <div class="workout-record-actions">
+      <%= link_to "キャンセル", workout_records_path, class: "button button-secondary" %>
+      <%= button_to "削除する", workout_record_path(@workout_record), method: :delete,
+                    class: "button button-danger" %>
+    </div>
+  </main>
+</div>

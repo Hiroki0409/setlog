@@ -1,0 +1,18 @@
+<p>
+  <time datetime="<%= record.performed_on.iso8601 %>"><%= record.performed_on.iso8601 %></time>
+  <strong><%= record.exercise.name %></strong>
+</p>
+<dl class="workout-record-values">
+  <div>
+    <dt>重量（kg）</dt>
+    <dd><%= number_with_precision(record.weight, precision: 2, strip_insignificant_zeros: true, delimiter: "") %></dd>
+  </div>
+  <div>
+    <dt>回数</dt>
+    <dd><%= record.reps %></dd>
+  </div>
+  <div>
+    <dt>セット数</dt>
+    <dd><%= record.set_count %></dd>
+  </div>
+</dl>
