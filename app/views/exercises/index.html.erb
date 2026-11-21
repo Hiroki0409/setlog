@@ -54,6 +54,7 @@
       <%= form.submit "種目を登録する", class: "button button-primary" %>
     <% end %>
 
+    <%= link_to "記録一覧", workout_records_path, class: "button button-secondary" %>
     <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "button button-secondary" %>
   </main>
 </div>
