@@ -1,5 +1,6 @@
 class WorkoutRecordsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_workout_record, only: [ :edit, :update ]
 
   def index
     records = current_user.workout_records.includes(:exercise)
@@ -33,7 +34,29 @@ class WorkoutRecordsController < ApplicationController
     end
   end
 
+  def edit
+    @exercises = current_user.exercises.order(:id)
+  end
+
+  def update
+    attributes = workout_record_params
+    exercise = current_user.exercises.find(attributes.delete(:exercise_id))
+    @workout_record.assign_attributes(attributes)
+    @workout_record.exercise = exercise
+
+    if @workout_record.save
+      redirect_to workout_records_path, notice: "記録を更新しました。", status: :see_other
+    else
+      @exercises = current_user.exercises.order(:id)
+      render :edit, status: :unprocessable_content
+    end
+  end
+
   private
+
+  def set_workout_record
+    @workout_record = current_user.workout_records.find(params[:id])
+  end
 
   def load_previous_workout
     return unless @workout_record.valid_performed_on?

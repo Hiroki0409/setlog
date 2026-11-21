@@ -8,6 +8,10 @@
   <main class="home-content">
     <h1>記録一覧</h1>
 
+    <% if flash[:notice].present? %>
+      <p class="home-guide" role="status"><%= flash[:notice] %></p>
+    <% end %>
+
     <% if @workout_records.empty? %>
       <p>まだ記録がありません。種目一覧から種目の登録や記録入力ができます。</p>
     <% else %>
@@ -32,6 +36,7 @@
                 <dd><%= record.set_count %></dd>
               </div>
             </dl>
+            <%= link_to "編集", edit_workout_record_path(record), class: "button button-secondary" %>
           </li>
         <% end %>
       </ul>

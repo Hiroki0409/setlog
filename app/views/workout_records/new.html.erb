@@ -16,16 +16,7 @@
       <p class="home-guide" role="status"><%= flash[:notice] %></p>
     <% end %>
 
-    <% if @workout_record.errors.any? %>
-      <div class="auth-errors" role="alert">
-        <p>入力内容を確認してください。</p>
-        <ul>
-          <% @workout_record.errors.each do |error| %>
-            <li><%= t("workout_records.errors.#{error.attribute}", locale: :ja, default: error.full_message) %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render "errors", record: @workout_record %>
 
     <section class="home-guide previous-workout" aria-labelledby="previous-workout-heading">
       <h2 id="previous-workout-heading">前回の記録</h2>
@@ -69,21 +60,7 @@
         </div>
       <% end %>
 
-      <div class="auth-field">
-        <%= form.label :weight, "重量（kg）" %>
-        <%= form.text_field :weight, value: @workout_record.weight_before_type_cast, inputmode: "decimal", required: true %>
-      </div>
-
-      <div class="auth-field">
-        <%= form.label :reps, "回数" %>
-        <%= form.text_field :reps, value: @workout_record.reps_before_type_cast, inputmode: "numeric", required: true %>
-      </div>
-
-      <div class="auth-field">
-        <%= form.label :set_count, "セット数" %>
-        <%= form.text_field :set_count, value: @workout_record.set_count_before_type_cast,
-                            inputmode: "numeric", required: true %>
-      </div>
+      <%= render "measurement_fields", form: form, record: @workout_record %>
 
       <%= form.submit "記録を保存する", class: "button button-primary" %>
     <% end %>

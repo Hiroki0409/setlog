@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     post "users", to: "devise/registrations#create", as: :user_registration
   end
   resources :exercises, only: [ :index, :create ]
-  resources :workout_records, only: [ :index, :new, :create ]
+  resources :workout_records, only: [ :index, :new, :create, :edit, :update ]
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

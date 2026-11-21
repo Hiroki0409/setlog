@@ -1,0 +1,10 @@
+<% if record.errors.any? %>
+  <div class="auth-errors" role="alert">
+    <p>入力内容を確認してください。</p>
+    <ul>
+      <% record.errors.each do |error| %>
+        <li><%= t("workout_records.errors.#{error.attribute}", locale: :ja, default: error.full_message) %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
