@@ -157,3 +157,20 @@ a.button {
   margin: 8px 0 0;
   padding-inline-start: 1.25em;
 }
+
+.previous-workout h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.previous-workout table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.previous-workout th,
+.previous-workout td {
+  padding: 6px 4px;
+  border-bottom: 1px solid #c6d2dc;
+  text-align: right;
+}

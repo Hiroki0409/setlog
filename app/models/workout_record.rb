@@ -13,6 +13,14 @@ class WorkoutRecord < ApplicationRecord
   validate :validate_weight
   validate :validate_performed_on
 
+  def valid_performed_on?
+    input = performed_on_before_type_cast
+    return false if input.is_a?(String) && !DATE_FORMAT.match?(input)
+
+    date = performed_on
+    date.is_a?(Date) && date.year.between?(1000, 9999)
+  end
+
   private
 
   def validate_weight
@@ -26,14 +34,8 @@ class WorkoutRecord < ApplicationRecord
   end
 
   def validate_performed_on
-    input = performed_on_before_type_cast
-    return errors.add(:performed_on, :blank) if input.blank?
+    return errors.add(:performed_on, :blank) if performed_on_before_type_cast.blank?
 
-    if input.is_a?(String) && !DATE_FORMAT.match?(input)
-      return errors.add(:performed_on, :invalid)
-    end
-
-    date = performed_on
-    errors.add(:performed_on, :invalid) unless date.is_a?(Date) && date.year.between?(1000, 9999)
+    errors.add(:performed_on, :invalid) unless valid_performed_on?
   end
 end

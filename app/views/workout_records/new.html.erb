@@ -8,6 +8,9 @@
   <main class="home-content">
     <h1>トレーニング記録</h1>
     <p><strong>種目</strong> <%= @exercise.name %></p>
+    <% if @input_date %>
+      <p><strong>今回の実施日</strong> <time datetime="<%= @input_date.iso8601 %>"><%= @input_date.iso8601 %></time></p>
+    <% end %>
 
     <% if flash[:notice].present? %>
       <p class="home-guide" role="status"><%= flash[:notice] %></p>
@@ -24,13 +27,47 @@
       </div>
     <% end %>
 
+    <section class="home-guide previous-workout" aria-labelledby="previous-workout-heading">
+      <h2 id="previous-workout-heading">前回の記録</h2>
+      <% if @input_date.nil? %>
+        <p>実施日を選ぶと前回の記録が表示されます。</p>
+      <% elsif @previous_workout_records.empty? %>
+        <p>この実施日より前の記録はありません。</p>
+      <% else %>
+        <% previous_date = @previous_workout_records.first.performed_on.iso8601 %>
+        <p>前回の実施日 <time datetime="<%= previous_date %>"><%= previous_date %></time></p>
+        <table id="previous-workout-records">
+          <thead>
+            <tr>
+              <th scope="col">重量（kg）</th>
+              <th scope="col">回数</th>
+              <th scope="col">セット数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @previous_workout_records.each do |record| %>
+              <tr>
+                <td><%= number_with_precision(record.weight, precision: 2, strip_insignificant_zeros: true, delimiter: "") %></td>
+                <td><%= record.reps %></td>
+                <td><%= record.set_count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </section>
+
     <%= form_with model: @workout_record, local: true, class: "auth-form" do |form| %>
       <%= form.hidden_field :exercise_id %>
 
-      <div class="auth-field">
-        <%= form.label :performed_on, "実施日" %>
-        <%= form.date_field :performed_on, required: true %>
-      </div>
+      <% if @input_date %>
+        <%= form.hidden_field :performed_on, value: @input_date.iso8601 %>
+      <% else %>
+        <div class="auth-field">
+          <%= form.label :performed_on, "実施日" %>
+          <%= form.date_field :performed_on, required: true %>
+        </div>
+      <% end %>
 
       <div class="auth-field">
         <%= form.label :weight, "重量（kg）" %>
@@ -51,6 +88,6 @@
       <%= form.submit "記録を保存する", class: "button button-primary" %>
     <% end %>
 
-    <%= link_to "種目一覧へ戻る", exercises_path, class: "button button-secondary" %>
+    <%= link_to "種目・実施日を選び直す", exercises_path, class: "button button-secondary" %>
   </main>
 </div>
