@@ -1,6 +1,8 @@
 class WorkoutRecordsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_workout_record, only: [ :edit, :update ]
+  before_action :set_workout_record, only: [ :edit, :update, :confirm_delete, :destroy ]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
   def index
     records = current_user.workout_records.includes(:exercise)
@@ -52,10 +54,22 @@ class WorkoutRecordsController < ApplicationController
     end
   end
 
+  def confirm_delete
+  end
+
+  def destroy
+    @workout_record.destroy!
+    redirect_to workout_records_path, notice: "記録を削除しました。", status: :see_other
+  end
+
   private
 
   def set_workout_record
     @workout_record = current_user.workout_records.find(params[:id])
+  end
+
+  def render_not_found
+    render file: Rails.root.join("public", "404.html").to_s, status: :not_found, layout: false
   end
 
   def load_previous_workout
