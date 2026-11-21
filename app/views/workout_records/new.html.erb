@@ -88,6 +88,8 @@
       <%= form.submit "記録を保存する", class: "button button-primary" %>
     <% end %>
 
+    <%= link_to "記録一覧", workout_records_path(exercise_id: @exercise.id, performed_on: @input_date&.iso8601),
+                class: "button button-secondary" %>
     <%= link_to "種目・実施日を選び直す", exercises_path, class: "button button-secondary" %>
   </main>
 </div>

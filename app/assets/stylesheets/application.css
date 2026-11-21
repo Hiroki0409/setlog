@@ -174,3 +174,27 @@ a.button {
   border-bottom: 1px solid #c6d2dc;
   text-align: right;
 }
+
+.workout-record-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workout-record-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.workout-record-values dt {
+  font-size: 14px;
+}
+
+.workout-record-values dd {
+  margin: 0;
+  font-weight: 700;
+}

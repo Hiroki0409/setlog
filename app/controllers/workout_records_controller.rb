@@ -1,6 +1,17 @@
 class WorkoutRecordsController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    records = current_user.workout_records.includes(:exercise)
+    @workout_records = records.order(performed_on: :desc, created_at: :desc, id: :desc).load
+
+    selection = params.permit(:exercise_id, :performed_on)
+    if selection[:exercise_id].present?
+      @return_exercise = current_user.exercises.find_by(id: selection[:exercise_id])
+      @return_date = selection[:performed_on]
+    end
+  end
+
   def new
     selection = params.permit(:exercise_id, :performed_on)
     @exercise = current_user.exercises.find(selection[:exercise_id])
