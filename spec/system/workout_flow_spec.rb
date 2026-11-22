@@ -16,7 +16,7 @@ RSpec.describe "トレーニング記録の利用フロー", type: :system do
     click_button "登録する"
     expect(page).to have_current_path(exercises_path)
 
-    click_button "ログアウト"
+    sign_out_through_browser
     sign_in_through_browser(email: email, password: password)
     expect(page).to have_current_path(exercises_path)
 
@@ -51,7 +51,7 @@ RSpec.describe "トレーニング記録の利用フロー", type: :system do
     expect(page).to have_no_css(".workout-record-list > li", text: "72.5")
     expect(page).to have_css(".workout-record-list > li", count: 2)
 
-    click_button "ログアウト"
+    sign_out_through_browser
     visit exercises_path
     expect(page).to have_current_path(new_user_session_path)
   end
