@@ -22,6 +22,11 @@ module SystemBrowserHelpers
     fill_in "パスワード", with: password
     click_button "ログイン"
   end
+
+  def sign_out_through_browser
+    click_button "ログアウト"
+    expect(page).to have_link("ログイン", href: new_user_session_path)
+  end
 end
 
 RSpec.configure do |config|
