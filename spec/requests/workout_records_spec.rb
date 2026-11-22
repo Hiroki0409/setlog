@@ -51,6 +51,7 @@ RSpec.describe "トレーニング記録の登録", type: :request do
     get new_workout_record_path(exercise_id: other_exercise.id, performed_on: performed_on)
 
     expect(response).to have_http_status(:not_found)
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
   end
 
   it "他人の種目IDを指定した保存を拒否する" do
@@ -61,6 +62,7 @@ RSpec.describe "トレーニング記録の登録", type: :request do
     }.not_to change(WorkoutRecord, :count)
 
     expect(response).to have_http_status(:not_found)
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
   end
 
   it "過去日の記録を保存し、同じ種目と実施日の画面に戻る" do

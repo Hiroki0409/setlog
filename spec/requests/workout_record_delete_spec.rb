@@ -71,7 +71,7 @@ RSpec.describe "本人の記録の削除", type: :request do
     get confirm_delete_workout_record_path(foreign_record)
 
     expect(response).to have_http_status(:not_found)
-    expect(response.body).not_to include("スクワット")
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
   end
 
   it "他人の記録を削除できない" do
@@ -81,6 +81,7 @@ RSpec.describe "本人の記録の削除", type: :request do
     expect { delete workout_record_path(foreign_record) }.not_to change(WorkoutRecord, :count)
 
     expect(response).to have_http_status(:not_found)
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
   end
 
   it "未ログインでは削除確認も削除もできない" do

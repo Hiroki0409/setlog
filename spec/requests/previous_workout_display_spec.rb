@@ -26,6 +26,9 @@ RSpec.describe "記録入力画面の前回記録", type: :request do
     record_on("2026-11-18", weight: 60, reps: 10, set_count: 2)
     record_on("2026-11-18", weight: 60, reps: 8)
     record_on("2026-11-17", weight: 30, reps: 10)
+    foreign_exercise = create(:user).exercises.create!(name: "ベンチプレス")
+    record_on("2026-11-18", weight: 90, reps: 5, for_exercise: foreign_exercise)
+    record_on("2026-11-19", weight: 95, reps: 4, for_exercise: foreign_exercise)
 
     get entry_path
 

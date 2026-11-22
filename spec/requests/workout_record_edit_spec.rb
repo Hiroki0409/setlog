@@ -15,7 +15,27 @@ RSpec.describe "本人の記録の編集", type: :request do
     { exercise_id: squat.id, performed_on: "2026-11-18", weight: "77.50", reps: "8", set_count: "3" }
   end
 
-  before { sign_in user }
+  let(:signed_in_user) { user }
+
+  before { sign_in signed_in_user if signed_in_user }
+
+  context "未ログインの場合" do
+    let(:signed_in_user) { nil }
+
+    it "編集画面を開くとログイン画面へ移動する" do
+      get edit_workout_record_path(record)
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it "更新を拒否し、保存済みの値を変更しない" do
+      expect {
+        patch workout_record_path(record), params: { workout_record: updated_attributes }
+      }.not_to change { record.reload.attributes }
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+  end
 
   it "一覧から編集画面を開き、保存済みの値と本人の種目を表示する" do
     record
@@ -64,12 +84,14 @@ RSpec.describe "本人の記録の編集", type: :request do
     get edit_workout_record_path(foreign_record)
 
     expect(response).to have_http_status(:not_found)
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
   end
 
   it "他人の記録を更新できない" do
     patch workout_record_path(foreign_record), params: { workout_record: updated_attributes }
 
     expect(response).to have_http_status(:not_found)
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
     expect(foreign_record.reload.exercise).to eq(foreign_exercise)
     expect(foreign_record.weight).to eq(BigDecimal("100"))
   end
@@ -78,6 +100,7 @@ RSpec.describe "本人の記録の編集", type: :request do
     patch workout_record_path(record), params: { workout_record: updated_attributes.merge(exercise_id: foreign_exercise.id) }
 
     expect(response).to have_http_status(:not_found)
+    expect(response.body.b).to eq(Rails.root.join("public/404.html").binread)
     expect(record.reload.exercise).to eq(exercise)
     expect(record.weight).to eq(BigDecimal("60.25"))
   end
