@@ -1,18 +1,20 @@
 <% weight_value = record.weight_before_type_cast %>
 <% weight_value = weight_value.to_s("F") if weight_value.is_a?(BigDecimal) %>
 
-<div class="auth-field">
-  <%= form.label :weight, "重量（kg）" %>
-  <%= form.text_field :weight, value: weight_value, inputmode: "decimal", required: true %>
-</div>
+<div class="workout-measurements">
+  <div class="auth-field">
+    <%= form.label :weight, "重量（kg）" %>
+    <%= form.text_field :weight, value: weight_value, inputmode: "decimal", required: true %>
+  </div>
 
-<div class="auth-field">
-  <%= form.label :reps, "回数" %>
-  <%= form.text_field :reps, value: record.reps_before_type_cast, inputmode: "numeric", required: true %>
-</div>
+  <div class="auth-field">
+    <%= form.label :reps, "回数" %>
+    <%= form.text_field :reps, value: record.reps_before_type_cast, inputmode: "numeric", required: true %>
+  </div>
 
-<div class="auth-field">
-  <%= form.label :set_count, "セット数" %>
-  <%= form.text_field :set_count, value: record.set_count_before_type_cast,
-                      inputmode: "numeric", required: true %>
+  <div class="auth-field">
+    <%= form.label :set_count, "セット数" %>
+    <%= form.text_field :set_count, value: record.set_count_before_type_cast,
+                        inputmode: "numeric", required: true %>
+  </div>
 </div>

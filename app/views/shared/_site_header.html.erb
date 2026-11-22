@@ -1,0 +1,11 @@
+<header class="site-header">
+  <p class="site-name">SetLog</p>
+  <% if user_signed_in? %>
+    <nav class="site-navigation" aria-label="主要メニュー">
+      <%= link_to "種目一覧", exercises_path, class: "button button-secondary" %>
+      <%= link_to "履歴", workout_records_path, class: "button button-secondary" %>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
+                    class: "button button-secondary" %>
+    </nav>
+  <% end %>
+</header>

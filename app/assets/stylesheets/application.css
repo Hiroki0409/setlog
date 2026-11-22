@@ -32,6 +32,26 @@ h1, p {
   font-weight: 700;
 }
 
+.site-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.site-navigation .button {
+  width: auto;
+  padding-inline: 10px;
+}
+
+.home-content,
+.home-guide,
+.auth-form,
+.auth-field,
+.workout-record-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .home-content {
   display: grid;
   gap: 20px;
@@ -138,6 +158,7 @@ a.button {
 .auth-field input,
 .auth-field select {
   width: 100%;
+  min-width: 0;
   min-height: 44px;
   padding: 8px 12px;
   border: 1px solid #767676;
@@ -156,6 +177,43 @@ a.button {
 .auth-errors ul {
   margin: 8px 0 0;
   padding-inline-start: 1.25em;
+}
+
+.workout-measurements {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 599px) {
+  .site-header,
+  .home-content {
+    padding: 16px;
+  }
+
+  .home-content {
+    gap: 16px;
+  }
+
+  .previous-workout {
+    padding: 12px;
+  }
+
+  .previous-workout table {
+    table-layout: fixed;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 599px) {
+  .workout-measurements {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .workout-measurements input {
+    padding-inline: 8px;
+  }
 }
 
 .previous-workout h2 {
