@@ -1,7 +1,7 @@
 FROM ruby:3.4.12-bookworm
 
 RUN apt-get update -qq \
-    && apt-get install --no-install-recommends -y default-libmysqlclient-dev pkg-config \
+    && apt-get install --no-install-recommends -y default-libmysqlclient-dev pkg-config chromium chromium-driver \
     && rm -rf /var/lib/apt/lists/* \
     && gem install rails --version 8.1.4.1 --no-document
 
