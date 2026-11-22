@@ -1,9 +1,7 @@
 <% content_for :title, "ログイン | SetLog" %>
 
 <div class="site-shell">
-  <header class="site-header">
-    <p class="site-name">SetLog</p>
-  </header>
+  <%= render "shared/site_header" %>
 
   <main class="home-content">
     <h1>ログイン</h1>
@@ -26,6 +24,6 @@
       <%= form.submit "ログイン", class: "button button-primary" %>
     <% end %>
 
-    <%= link_to "TOPページへ戻る", root_path %>
+    <%= link_to "TOPページへ戻る", root_path, class: "button button-secondary" %>
   </main>
 </div>

@@ -1,7 +1,5 @@
 <div class="site-shell">
-  <header class="site-header">
-    <p class="site-name">SetLog</p>
-  </header>
+  <%= render "shared/site_header" %>
 
   <main class="home-content">
     <h1>前回の記録を見ながら、<br>今日の筋トレを記録。</h1>
@@ -15,7 +13,6 @@
     <% if user_signed_in? %>
       <p class="preparation-notice">ログイン中です。</p>
       <%= link_to "種目一覧", exercises_path, class: "button button-primary" %>
-      <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "button button-secondary" %>
     <% else %>
       <div class="home-actions">
         <%= link_to "新規登録", new_user_registration_path, class: "button button-primary" %>

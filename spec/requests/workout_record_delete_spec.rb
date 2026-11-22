@@ -26,7 +26,7 @@ RSpec.describe "本人の記録の削除", type: :request do
     expect(response.body).to include("記録の削除確認", "ベンチプレス", 'datetime="2026-11-19"')
     document = Nokogiri::HTML(response.body)
     expect(document.css(".workout-record-values dd").map(&:text)).to eq([ "60.25", "8", "2" ])
-    form = document.at_css("form")
+    form = document.at_css("main form")
     expect(form["action"]).to eq(workout_record_path(record))
     expect(form.at_css('input[name="_method"]')["value"]).to eq("delete")
   end
