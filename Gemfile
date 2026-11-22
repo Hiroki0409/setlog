@@ -38,6 +38,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "bullet", "~> 8.3"
 end
 
 gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
