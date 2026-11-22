@@ -44,6 +44,10 @@ gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
 
 gem "factory_bot_rails", "~> 6.5", groups: [ :development, :test ]
 
-gem "simplecov", "~> 1.3", group: :test, require: false
+group :test do
+  gem "simplecov", "~> 1.3", require: false
+  gem "capybara", "~> 3.40", require: false
+  gem "selenium-webdriver", "~> 4.0", require: false
+end
 
 gem "devise", "~> 5.0"
